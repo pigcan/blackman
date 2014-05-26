@@ -1,0 +1,20 @@
+{
+  "name" : "switchable",
+  "description" : "switchable",
+  "version" : "0.1.0",
+  "author" : "pigcan <jiangjay818@gmail.com>",
+  "homepage" : "https://github.com/pigcan/blackman",
+  "repository" : "https://github.com/pigcan/blackman",
+  "devDependencies": {
+    "grunt": "~0.4.x",
+    "grunt-contrib-uglify": "~0.2.2",
+    "grunt-contrib-copy": "~0.4.1",
+    "grunt-depconcat": "~0.2.0",
+    "grunt-contrib-watch": "~0.4.0"
+  },
+  
+  "keywords": [
+    "switchable"
+  ]    
+}
+
