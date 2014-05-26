@@ -31,39 +31,391 @@
       </header>
       <section>
         <h3>
-<a name="welcome-to-github-pages" class="anchor" href="#welcome-to-github-pages"><span class="octicon octicon-link"></span></a>Welcome to GitHub Pages.</h3>
+<a name="getting-started" class="anchor" href="#getting-started"><span class="octicon octicon-link"></span></a>Getting Started.</h3>
 
-<p>This automatic page generator is the easiest way to create beautiful pages for all of your projects. Author your page content here using GitHub Flavored Markdown, select a template crafted by a designer, and publish. After your page is generated, you can check out the new branch:</p>
+<h4>step 1 - 加载资源文件</h4>
 
-<pre><code>$ cd your_repo_root/repo_name
-$ git fetch origin
-$ git checkout gh-pages
+<p>按照如下放下把<b>switchable.js</b> 引入到你的html中，并确保时机在于你创建组件之前。</p>
+
+<pre><code>&lt;script type=&quot;text/javascript&quot; src=&quot;path/to/switchable.js&quot;&gt;&lt;/script&gt;</code></pre>
+
+<p>switchable.js <strong>没有</strong> 依赖任何第三方类库。</p>
+
+<h4>step 2 - 选择组件的创建方式  </h4>
+
+<p>该switchable组件的创建方式有2种</p>
+<p><ul>
+<li><strong>一：</strong>直接通过脚本创建（使用默认模板 - 图片轮播 与数据结构）。优点：快速 缺点缺乏自由度，数据配置繁琐</li>
+<li><strong>二：</strong>从已有的html的节点创建。优点：自由度高，缺点：暂无 XD</li>
+</ul>
+</p>
+
+
+<h5>创建方式一：</h5>
+<pre><code>//使用脚本创建一个新的switchable组件
+var buffDude = new window.switchable();
+
+//1.1通过generate方法
+//设置插入的节点，设置默认模板数据，以及同步viewModel
+buffDude.generate('#J_Where_You_Want_Append',[
+    {
+        attr:"1",
+        url:"http://i.mmcdn.cn/simba/img/T12203FK4eXXb1upjX.jpg",
+        href:"http://m.baidu.com"
+    },
+    {
+        attr:"2",
+        url:"http://i.mmcdn.cn/simba/img/T1h6t0FFheXXb1upjX.jpg",
+        href:"http://m.baidu.com"
+    }
+], {slient : true}}
+
+//1.2 手动一步步设置，步骤如下设置vm数据，把数据插入所需节点，同步viewModel, 同generate内部实现
+
+// set vm
+
+self.vm = [
+  ...
+];
+//把节点插入到你所需呈现组件的节点上
+document.querySelector('#J_Where_You_Want_Append').appendChild(buffDude.root);
+//同步一次viewModel
+buffDude.asyncViewModel();
 </code></pre>
 
-<p>If you're using the GitHub for Mac, simply sync your repository and you'll see the new branch.</p>
+<h5>创建方式二：</h5>
+<pre><code>//从已有节点创建一个新的switchable组件
+var anotherBuffDude = new window.Switchable('#J_Node_Id_Attr');
+</code></pre>
+
+<strong>请注意：</strong>
+<p>
+在使用已有节点创建switchable组件的时候，对节点结构需求如下：
+<pre><code>&lt;div id="J_Node_Id_Att"&gt;
+    &lt;ul&gt;
+        &lt;li &gt;自定义节点内容&lt;/li&gt;
+        &lt;li &gt;自定义节点内容&lt;/li&gt;
+        &lt;li &gt;自定义节点内容&lt;/li&gt;
+    &lt;/ul&gt;
+&lt;/div&gt;</code></pre>
+
+</p>
+
+
+<h4>step 3 - 书写样式  </h4>
+
+<p>非常幸运你基本不用过多关注样式上的设定，这些设定包括兼容性，bug等</p>
+<p>你所唯一需要关注的是设定一个滚动元素的宽度（横向滚动），或 一个滚动元素的高度（纵向滚动）对.slide做合适的设置即可。</p>
+<pre><code>.slide {width: 320px;height:200px;}
+</code></pre>
+
+
+<h4>ALL DONE!</h4>
+<p>横向：</p>
+<div id="J_Magic"></div>
+
+<button id="J_UseY">1秒钟变纵向</button>
+<div id="J_Magic_Y" style="display:none"></div>
+
+<div id="J_Magic_More" style="display:none">
+<p>事实上blackman还能干更多的事情，期待你的发现哦  ^^ </p>
+</div>
+<script src="switchable.js"></script>
+
+<script type="text/javascript">
+
+var x = new window.Switchable({itemWidth:320,maxPoint:4,loop:true});
+x.generate('#J_Magic',[
+    {
+        attr:"1",
+        url:"images/1.jpg",
+        href:"http://m.baidu.com"
+
+    },
+    {
+        attr:"2",
+        url:"images/2.jpg",
+        href:"http://m.baidu.com"
+    },
+    {
+        attr:"3",
+        url:"images/3.jpg",
+        href:"http://m.baidu.com"
+    },
+    {
+        attr:"4",
+        url:"images/4.jpg",
+        href:"http://m.baidu.com"
+    },
+    {
+        attr:"5",
+        url:"images/5.jpg",
+        href:"http://m.baidu.com"
+    },
+    {
+        attr:"6",
+        url:"images/6.jpg",
+        href:"http://m.baidu.com"
+    }
+
+],{slient:true})
+
+document.querySelector('#J_UseY').addEventListener("click", function(ev){
+  document.querySelector('#J_Magic_Y').style.display = "block";
+  document.querySelector('#J_Magic_More').style.display = "block";
+  var y = new window.Switchable({dtnY:true,itemHeight:200,loop:true});
+  y.generate('#J_Magic_Y',[
+      {
+          attr:"1",
+          url:"images/1.jpg",
+          href:"http://m.baidu.com"
+
+      },
+      {
+          attr:"2",
+          url:"images/2.jpg",
+          href:"http://m.baidu.com"
+      },
+      {
+          attr:"3",
+          url:"images/3.jpg",
+          href:"http://m.baidu.com"
+      },
+      {
+          attr:"4",
+          url:"images/4.jpg",
+          href:"http://m.baidu.com"
+      },
+      {
+          attr:"5",
+          url:"images/5.jpg",
+          href:"http://m.baidu.com"
+      },
+      {
+          attr:"6",
+          url:"images/6.jpg",
+          href:"http://m.baidu.com"
+      }
+
+  ],{slient:true})
+  }, false);
+</script>
+<style type="text/css">
+*{margin: 0;padding:0;list-style: none;}
+#J_Magic,#J_Magic_Y{width: 320px;height: 300px;position: relative;}
+.slide{width:320px;height: 200px}
+.slide ul{padding: 0;margin: 0;}
+.slide img{padding: 0;margin: 0;border: 0;position: static;}
+</style>
 
 <h3>
-<a name="designer-templates" class="anchor" href="#designer-templates"><span class="octicon octicon-link"></span></a>Designer Templates</h3>
+<a name="api" class="anchor" href="#api"><span class="octicon octicon-link"></span></a>API</h3>
 
-<p>We've crafted some handsome templates for you to use. Go ahead and continue to layouts to browse through them. You can easily go back to edit your page before publishing. After publishing your page, you can revisit the page generator and switch to another theme. Your Page content will be preserved if it remained markdown format.</p>
+<h4>基类 Switchable(ele, options)</h4>
+<pre><code>/**
+* [Switchable 组件基础类]
+* @param {[string]} ele . 如果选择创建组件的方式来源于脚本，则ele可省略，如果创建的方式来源于已有的html节点则传入节点的名称则可
+* @param {[obj]} options
+* options.itemWidth 滑动块中单个元素的宽度
+* options.itemHeight 滑动块中单个元素的高度，应用于纵向滑动，横向滑动时无效，请于样式中设定滑动块中单个元素的高度
+* options.distance 一次完整滑动的距离，通常理解为一个滑动块的宽度（横向）或者高度（纵向）
+* options.maxPoint 可以组件可以滑动次数，设定后可以不根据元素个数来设定滑动的次数
+* options.dtnY  是否纵向滑动
+*/
+</code></pre>
+<p>通常情况下我们要创建一个新的switchable组件需要创建一个新的实例</p>
+
+<pre><code>var buffDude = new window.switchable();
+</code></pre>
+
+
+<h4>实例方法 - instance methods</h4>
+
+<p>------------------------------------------------------</p>
+
+
+<h4>generate(selector, vm, options)</h4>
+<pre><code>/**
+* [generate 渲染模板数据并插入节点，同时有选择性的设置是否同步viewModel]
+* @param {[string]} selector 所需插入的节点，填写节点选择器即可
+* @param {[array]} vm 组件数据对象 array-object
+* @param {[obj]} options 
+* options.slient  true : 组件数据设置完毕后立即同步viewModel; false : 稍后同步viewModel
+* 
+*/
+</code></pre>
+<p>通常情况下如果组件的创建来自于switchable本身时候该方法需调用，如果创建方式来源于已有的html节点时候可忽略该方法</p>
+<p>使用方式如下：</p>
+<pre><code>buffDude.generate('#J_Where_You_Want_Append',[
+    {
+        attr:"1",
+        url:"http://i.mmcdn.cn/simba/img/T12203FK4eXXb1upjX.jpg",
+        href:"http://m.baidu.com"
+    },
+    {
+        attr:"2",
+        url:"http://i.mmcdn.cn/simba/img/T1h6t0FFheXXb1upjX.jpg",
+        href:"http://m.baidu.com"
+    }
+], {slient : true}}
+</code></pre>
+
+<h4>remove</h4>
+<pre><code>/**
+* [remove 从html中移除节点]
+* @return component fragment
+*/
+</code></pre>
+
+<p>从html中移除节点同时返回了一个就是该移除节点的fragment，方便你如果有需求可以再次插回节点</p>
+
+<pre><code>var componentFragment = buffDude.remove();
+document.querySelector('#J_WhereverYouWant').appendChild(componentFragment);//可以重新插回节点
+</code></pre>
+
+<h4>content</h4>
+<pre><code>/**
+* [content 插入一个节点 节点可以是由模板拼接而成的string类型的html片段'&lt;li&gt;&lt;/li&gt;' 也可以是一个 完整Fragment]
+* @param  {[string|node object]} 所需插入的节点片段 可以是由模板生成的 string类型字符串 或者 是一个完整的Fragment对象
+* @param  {object} obj,配置参数，目前仅支持内容新增后全局刷新viewModel，并同时允许设置maxPoint的值
+* // todo 后续允许局部刷新viewModel
+* @no return
+*/
+</code></pre>
+
+<p>具体使用见如下：</p>
+<pre><code>//方式一节点内容事先由模板引擎生成
+var rendered = Mustache.render(template, json);
+//rendered内容必须是一个滑动块的内容
+//如&lt;li&gt;&lt;a href='http://baidu.com'&gt;x&lt;/a&gt;&lt;/li&gt;&lt;li&gt;&lt;a href='http://baidu.com'&gt;xx&lt;/a&gt;&lt;/li&gt;
+buffDude.content(rendered,{maxPoint:7});
+
+//方式二节点内容是一个完整的fragment
+
+var rendered = document.createFragment();
+var li = document.createElement('li');
+......
+rendered.appendChild(li);
+buffDude.content(rendered);
+
+</code></pre>
+
+
+
+
+<h4>asyncViewModel</h4>
+<pre><code>/**
+* [asyncViewModel  2个方向对组建进行渲染，（1）组件完全由脚本创建 （2）组件由已有html节点创建而来，当然节点需要符合组件需求]
+* @no return 
+*/
+</code></pre>
+<p>不推荐基础用户直接使用。一般情况下该方法只在组件创建来源于组件内置模板的时候使用，但是更推荐使用<strong>generate</strong>方法来自动完成一些步骤！</p>
+<p>当然你如果好奇心很强，一般使用场景如下：</p>
+<pre><code> var newComponent = new Switchable();
+// set vm
+
+newComponent.vm = [
+  ...
+];
+//把节点插入到你所需呈现组件的节点上
+document.querySelector('#J_Where_You_Want_Append').appendChild(newComponent.root);
+//同步一次viewModel
+newComponent.asyncViewModel();
+</code></pre>
+
+
+
+<h4>gonext</h4>
+<pre><code>/**
+* [gonext 向下一页进发]
+* @return {boolean} true : 还有下一页  false : 没有下一页
+* 
+*/
+</code></pre>
+<p>具体使用见如下：</p>
+
+<pre><code>buffDude.gonext();
+</code></pre>
+
+
+<h4>gopre</h4>
+<pre><code>/**
+* [gopre 向上一页进发]
+* @return {boolean} true : 还有上一页   false : 没有上一页
+*/
+</code></pre>
+<p>具体使用见如下：</p>
+
+<pre><code>buffDude.gopre();
+</code></pre>
+
+
+<h4>on</h4>
+<pre><code>/**
+* [on 对实例对应的节点绑定相关事件]
+* 该方法作用在于后续开发中可以针对不同的事件增加不同的处理方式。
+* 目前仅对beforeSwitch做了单独的控制
+*/
+</code></pre>
+
+<p>具体使用见如下：</p>
+
+<pre><code>buffDude.on('click', callback, false);
+//特别注意 - 目前对对beforeSwitch做了单独的控制,只需要把callback设置为false即可引发
+//当beforeSwitch的callback被设置为false后，后续所有事件将不予执行
+buffDude.on('beforeSwitch', false, false);
+
+</code></pre>
+
+
+<h4>自定义事件 - custom events</h4>
+
+<p>------------------------------------------------------</p>
+
+<h4>slidertouchstart</h4>
+<p>手指触摸到switchable组件当前时刻触发的事件，类touchstart</p>
+<p>具体使用见如下：</p>
+<pre><code>buffDude.on('slidertouchstart', callback, false);
+</code></pre>
+<h4>slidertouchmove</h4>
+<p>手指触摸到switchable组件并拖动组件内滑动块时触发的事件，类touchmove</p>
+<p>具体使用见如下：</p>
+<pre><code>buffDude.on('slidertouchmove', function(ev){}, false);
+//注明：ev内含有两个自定义的属性，分别是
+//ev.delta 表示滑动的偏移量
+//ev.direction 表示滑动最终的方向 1表示右滑，-1表示左滑
+</code></pre>
+<h4>slidertouchend</h4>
+<p>手指离开switchable组件触发的事件，类touchend</p>
+<p>具体使用见如下：</p>
+<pre><code>buffDude.on('slidertouchend', callback, false);
+</code></pre>
+<h4>beforeSwitch</h4>
+<p>该事件发生slidetouchmove的偏移量并没有 满足 n*distance ，而触发自动补齐一次或者多次distance偏移量的动画之前的事件。</p>
+<p>具体使用见如下：</p>
+<pre><code>buffDude.on('beforeSwitch', callback, false);
+//注明：目前对对beforeSwitch做了单独的控制,只需要把callback设置为false即可引发
+//当beforeSwitch的callback被设置为false后，后续所有事件将不予执行
+</code></pre>
+<h4>switch</h4>
+<p>该事件发生补全偏移量动画期间。类touchmove</p>
+<p>具体使用见如下：</p>
+<pre><code>buffDude.on('switch', callback, false);
+</code></pre>
+<h4>afterSwitch</h4>
+<p>该事件发生补全偏移量动画结束后。类touchend</p>
+<p>具体使用见如下：</p>
+<pre><code>buffDude.on('afterSwitch', callback, false);
+</code></pre>
+
 
 <h3>
-<a name="rather-drive-stick" class="anchor" href="#rather-drive-stick"><span class="octicon octicon-link"></span></a>Rather Drive Stick?</h3>
+<a name="pigcan" class="anchor" href="#pigcan"><span class="octicon octicon-link"></span></a>Support or Contact</h3>
 
-<p>If you prefer to not use the automatic generator, push a branch named <code>gh-pages</code> to your repository to create a page manually. In addition to supporting regular HTML content, GitHub Pages support Jekyll, a simple, blog aware static site generator written by our own Tom Preston-Werner. Jekyll makes it easy to create site-wide headers and footers without having to copy them across every page. It also offers intelligent blog support and other advanced templating features.</p>
-
-<h3>
-<a name="authors-and-contributors" class="anchor" href="#authors-and-contributors"><span class="octicon octicon-link"></span></a>Authors and Contributors</h3>
-
-<p>You can <a href="https://github.com/blog/821" class="user-mention">@mention</a> a GitHub username to generate a link to their profile. The resulting <code>&lt;a&gt;</code> element will link to the contributor's GitHub Profile. For example: In 2007, Chris Wanstrath (<a href="https://github.com/defunkt" class="user-mention">@defunkt</a>), PJ Hyett (<a href="https://github.com/pjhyett" class="user-mention">@pjhyett</a>), and Tom Preston-Werner (<a href="https://github.com/mojombo" class="user-mention">@mojombo</a>) founded GitHub.</p>
-
-<h3>
-<a name="support-or-contact" class="anchor" href="#support-or-contact"><span class="octicon octicon-link"></span></a>Support or Contact</h3>
-
-<p>Having trouble with Pages? Check out the documentation at <a href="http://help.github.com/pages">http://help.github.com/pages</a> or contact <a href="mailto:support@github.com">support@github.com</a> and we’ll help you sort it out.</p>
+<p>Very welcome to  hit me up on  twitter <a href="https://twitter.com/pigcan818">@pigcan</a> if you have any questions .</p>
       </section>
       <footer>
-        <p><small>Hosted on <a href="http://pages.github.com">GitHub Pages</a> using the Dinky theme</small></p>
+        <p><small>Thanks <a href="http://pages.github.com">GitHub Pages</a> Thanks Dinky theme</small></p>
       </footer>
     </div>
     <!--[if !IE]><script>fixScale(document);</script><![endif]-->

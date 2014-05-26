@@ -394,6 +394,7 @@ footer {
   header ul, header p.view {
     position:static;
   }
+
 }
 
 @media print, screen and (max-width: 480px) {
@@ -409,6 +410,7 @@ footer {
 	footer a{
 		display:block;
 	}
+  #J_Magic, #J_Magic_Y{left: -20px;}
 
 }
 
